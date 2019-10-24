@@ -30,7 +30,7 @@ end
 
 class SchemaTransform < Parslet::Transform
   rule(array: subtree(:l)) {
-    { mode: 'REPEATED' }.merge(l)
+    l.merge({ mode: 'REPEATED' })
   }
 
   rule(record: subtree(:r)) {
