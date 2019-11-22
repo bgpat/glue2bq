@@ -8,7 +8,7 @@ class SchemaParser < Parslet::Parser
   }
 
   rule(:primitive) {
-    token.as(:type)
+    token.as(:integer) | token.as(:type)
   }
 
   rule(:array) {
@@ -25,6 +25,10 @@ class SchemaParser < Parslet::Parser
 
   rule(:token) {
     match(/\w/).repeat
+  }
+
+  rule(:integer) {
+    str('int') | str('bigint')
   }
 end
 
@@ -43,5 +47,9 @@ class SchemaTransform < Parslet::Transform
 
   rule(type: simple(:t)) {
     { type: t.to_s.upcase, mode: 'NULLABLE' }
+  }
+
+  rule(integer: simple(:t)) {
+    { type: 'INTEGER', mode: 'NULLABLE' }
   }
 end
