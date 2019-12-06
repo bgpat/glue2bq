@@ -8,7 +8,7 @@ class SchemaParser < Parslet::Parser
   }
 
   rule(:primitive) {
-    token.as(:integer) | token.as(:type)
+    integer.as(:integer) | float.as(:float) | token.as(:type)
   }
 
   rule(:array) {
@@ -29,6 +29,10 @@ class SchemaParser < Parslet::Parser
 
   rule(:integer) {
     str('int') | str('bigint')
+  }
+
+  rule(:float) {
+    str('float') | str('double')
   }
 end
 
@@ -51,5 +55,10 @@ class SchemaTransform < Parslet::Transform
 
   rule(integer: simple(:t)) {
     { type: 'INTEGER', mode: 'NULLABLE' }
+  }
+
+
+  rule(float: simple(:t)) {
+    { type: 'FLOAT', mode: 'NULLABLE' }
   }
 end
